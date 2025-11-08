@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void xuatMang(int arr[], int n){
+	for (int i = 0; i<n; i++){
+		printf("arr[%d] = %d\n", i, arr[i]);
+	}
+}
+void initializeArray(int arr[], int n, int min, int max){
+	for (int i = 0; i<n; i++){
+		arr[i] = min + rand() % (max - min + 1);
+		min = arr[i]; //sinh hàm random tăng dần
+	}	
+}
+int binarySearch(int arr[], int n, int value, int *comps){
+	(*comps) = 0;
+	int lower_B = 0;
+	int upper_B = n-1;
+	int midPoint;
+	while (lower_B <= upper_B){
+		midPoint = (lower_B + upper_B)/2;
+		(*comps)++;
+		if(value == arr[midPoint]) return midPoint;
+		else if(value > arr[midPoint]) lower_B = midPoint + 1;
+		else upper_B = midPoint - 1;
+	}
+	return -1;
+}
+int main(){
+	int arr[1000];
+	int n = 10;
+	int value,index, comps;
+	initializeArray(arr,n, -1000, 1000);
+	int k[] = {100, 1000, 10000};
+	for (int i = 0; i<3; i++){
+		int freTable[11] = {0};
+		for (int j = 1; j<= k[i]; j++){
+		value = arr[rand()%n];
+		index = binarySearch(arr,n,value,&comps);
+		(freTable[comps])++;
+		} // đã có giá trị tần số
+		float sum = 0;
+		for (int h = 0; h<=n; h++){
+			sum += h * freTable[h];
+		}
+		sum = sum/k[i]; // đã có Mean
+		printf("k = %d Frequency Table : \n", k[i]);
+		printf("comps : ");
+		for(int l = 0; l<=n; l++) printf("%d ",l);
+		printf("\nfreque : ");
+		for (int m = 0; m<=n; m++) printf("%d ", freTable[m]);
+		printf("\nMean = %f\n", sum);
+	}
+	return 0;
+}
