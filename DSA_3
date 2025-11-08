@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void xuatMang(int arr[], int n){
+	for (int i = 0; i<n; i++){
+		printf("arr[%d] = %d\n", i, arr[i]);
+	}
+}
+void initializeArray(int arr[], int n, int min, int max){
+	for (int i = 0; i<n; i++){
+		arr[i] = min + rand() % (max - min + 1);
+	}	
+}
+int linearSearch(int arr[], int n, int value, int *comps){
+	(*comps) = 0;
+	for (int i = 0; i<n; i++){
+		(*comps)++;
+		if(arr[i] == value){
+		 	return i;
+		}
+	}
+	return -1;
+}
+
+int main(){
+	time_t t;
+	srand((unsigned)time(&t));
+	int arr[1000];
+	int n = 10;
+	int value, comps, index;
+	int k[] = {100, 1000, 10000};
+	for (int i = 0; i<3; i++){
+		int freTable[11] = {0};
+		for (int j = 1; j<= k[i]; j++){
+		initializeArray(arr,n,-1000,1000);
+		value = arr[rand()%n];
+		index = linearSearch(arr,n,value,&comps);
+		(freTable[comps])++;
+	}
+//comps : số bước so sánh, được đếm từ 1->10, nên freTable[11] (chỉ số từ 0 -> 10)
+	float sum = 0;
+	for (int h = 1; h<=n; h++){
+		sum += h*freTable[h];
+		}
+		sum = sum/k[i];
+//hiện tại đã có average + freTable, giờ sẽ xuất ra màn hình
+		printf("k = %d Frequency Table : \n", k[i]);
+		printf("comps : ");
+		for(int l = 0; l<=n; l++) printf("%d ",l);
+		printf("\nfreque : ");
+		for (int m = 0; m<=n; m++) printf("%d ", freTable[m]);
+		printf("\nMean = %f\n", sum);
+	}
+	return 0;
+}
